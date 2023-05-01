@@ -19,14 +19,14 @@ Academics
 
 		- Acheviments (Excellence of students department & year wise, extra curricular achievments)
 
-				Study
+		Study
 		-----------------
 		-Student Name
 		-Acheviment
 		-Department
 		-Year
 
-		 Extra Curricular
+		Extra Curricular
 		-----------------
 		-Student Name
 		-Acheviment

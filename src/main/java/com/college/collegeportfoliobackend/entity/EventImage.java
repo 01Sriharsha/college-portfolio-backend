@@ -1,6 +1,7 @@
 package com.college.collegeportfoliobackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,8 @@ public class EventImage {
     private Integer id;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[] image;
 
     @ManyToOne

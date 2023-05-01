@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,12 +59,24 @@ public class EventController {
         return new ResponseEntity<>("Photo Uploaded successfully" , HttpStatus.OK);
     }
 
-    @GetMapping("/event/{eventId}/download")
-    public ResponseEntity<?> downloadPhoto(@PathVariable Integer eventId , HttpServletResponse response) throws IOException {
-        Event event = eventService.getSingleEvent(eventId);
-        List<byte[]> byteImages = event.getEventImages().stream().map(EventImage::getImage).toList();
-        HttpHeaders headers  = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(byteImages, headers , HttpStatus.OK);
+    @GetMapping("/event/{eventId}/downloadLinks")
+    public ResponseEntity<?> getAllImagesByEventId(@PathVariable Integer eventId) throws FileNotFoundException {
+        var imageUrl = eventService.downloadImagesByEventId(eventId).stream().map(image -> {
+            return ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/api/v1/download/image/")
+                    .path(String.valueOf(image.getId()))
+                    .toUriString();
+        }).toList();
+        return new ResponseEntity<>(imageUrl, HttpStatus.OK);
+    }
+
+    @GetMapping("/download/image/{imageId}")
+    public ResponseEntity<?> downloadImage(@PathVariable Integer imageId, HttpServletResponse response) throws IOException {
+        byte[] image = eventService.downloadImage(imageId);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(image);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(inputStream, response.getOutputStream());
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 }

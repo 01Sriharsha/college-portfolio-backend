@@ -7,30 +7,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Achievement {
+public class Gallery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String studentName;
-
-    private String achievement;
-
-    private String category; //study or extracurricular
-
-    private String year;
-
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private byte[] photo;
+    private byte[] image;
 
-    @ManyToOne
-    private Department department;
+    private String description;
 }

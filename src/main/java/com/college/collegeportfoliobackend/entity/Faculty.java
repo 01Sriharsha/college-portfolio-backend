@@ -1,6 +1,7 @@
 package com.college.collegeportfoliobackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,8 @@ public class Faculty {
     private String joinedDate;
 
     @Lob
-    @JsonIgnore
+    @Column(columnDefinition = "LONGBLOB")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[] photo;
 
     @ManyToOne

@@ -63,4 +63,14 @@ public class EventService {
                 }
         );
     }
+
+    public List<EventImage> downloadImagesByEventId(Integer eventId){
+        return eventImageRepository.findByEventId(eventId);
+    }
+
+    public byte[] downloadImage(Integer imageId) {
+        EventImage eventImage = eventImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Image not found"));
+        return eventImage.getImage();
+    }
 }
